@@ -3,27 +3,22 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Requests\BaseRequest as BaseRequest;
 
 
-class PaymentUploadRequest extends FormRequest
+class PaymentUploadRequest extends BaseRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return true;
-    }
+    
 
     /**
-     * Get the validation rules that apply to the request.
+     * Summary: Validate upload excel file
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'file' => 'required|file|mimes:csv,txt,xlsx,xls|max:10240', // 10MB
+            'file' => 'required|file|mimes:csv,txt,xlsx,xls|max:202400',
         ];
     }
 }
