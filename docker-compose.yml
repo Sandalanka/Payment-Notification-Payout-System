@@ -19,7 +19,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: laravel_db
+      MYSQL_DATABASE: payment
       MYSQL_USER: laravel
       MYSQL_PASSWORD: secret
     ports:
