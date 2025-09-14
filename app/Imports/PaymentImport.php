@@ -12,8 +12,6 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 class PaymentImport implements ToModel, SkipsOnFailure, WithHeadingRow ,WithValidation
 {
@@ -41,9 +39,8 @@ class PaymentImport implements ToModel, SkipsOnFailure, WithHeadingRow ,WithVali
                     'amount_usd' => $amountUsd,
                     'processed_at' => $row['date_time'],
                     'reference_no' => $row['reference_no'],
-                    'processed' => true,
+                    'processed' => false,
                     // 'uploaded_by' => $row['name'],
-                    // 'uploaded_file' => $row['name']
                ]);
 
         PaymentLog::create([
@@ -65,8 +62,8 @@ class PaymentImport implements ToModel, SkipsOnFailure, WithHeadingRow ,WithVali
             'customer_name'  => 'required|string|max:255',
             'customer_email' => 'required|email',
             'amount'         => 'required|numeric|min:0',
-            // 'currency'       => 'required|string|max:10',
-            //'date_time'      => 'required'
+            'currency'       => 'required',
+            'date_time'      => 'required'
         ];
     }
     
