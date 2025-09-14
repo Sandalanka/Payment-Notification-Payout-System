@@ -42,7 +42,7 @@ class AuthController extends BaseController
         try{
             $user =$this->authRepositoryInterface->register($userDetails);
             DB::commit();
-            return $this->sendResponse(new UserResource($data),'User Register Successful', 201);
+            return $this->sendResponse(new UserResource($user),'User Register Successful', 201);
 
         }catch(\Exception $exception){
             return ApiCatchErrors::rollback($exception);
