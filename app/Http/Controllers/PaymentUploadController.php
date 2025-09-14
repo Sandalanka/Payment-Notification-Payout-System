@@ -5,11 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PaymentUploadRequest;
 use App\Jobs\ProcessPaymentFileJob;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\UsersImport;
-use App\Imports\PaymentImport;
 use App\Classes\ApiCatchErrors;
 use App\Http\Controllers\BaseController as BaseController;
 
