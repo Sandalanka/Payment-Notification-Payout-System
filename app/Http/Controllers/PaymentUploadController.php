@@ -8,9 +8,25 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
 use App\Classes\ApiCatchErrors;
 use App\Http\Controllers\BaseController as BaseController;
+use App\Interfaces\PaymentUploadRepositoryInterface;
 
 class PaymentUploadController extends BaseController
 {    
+    
+    private PaymentUploadRepositoryInterface $aymentUploadRepositoryInterface;
+    
+        
+    /**
+     * __construct
+     *
+     * @param  mixed $paymentUploadRepositoryInterface
+     * @return void
+     */
+    public function __construct(PaymentUploadRepositoryInterface $paymentUploadRepositoryInterface)
+    {
+        $this->paymentUploadRepositoryInterface = $paymentUploadRepositoryInterface;
+    }
+    
     /**
      * Summary: upload excel and queue start
      *
@@ -20,8 +36,8 @@ class PaymentUploadController extends BaseController
     public function upload(PaymentUploadRequest $request): JsonResponse
     {   
         try{
-            $path = $request->file('file')->store('payment_uploads');
-            ProcessPaymentFileJob::dispatch($path);
+            $this->paymentUploadRepositoryInterface->uploadExcel($request->file('file'));
+
             return $this->sendResponse("","File uploaded successfully and processing started.",201);
         }catch(\Exception $exception){
             return ApiCatchErrors::throw($exception);
