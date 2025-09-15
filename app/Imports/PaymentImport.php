@@ -15,13 +15,26 @@ use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Imports\HeadingRowFormatter;
 
 class PaymentImport implements ToModel, SkipsOnFailure, WithHeadingRow ,WithValidation, WithChunkReading, ShouldQueue
 {
     use SkipsFailures;
     protected $cacheKey = 'currency_rates';
     protected $cacheTtl = 3600;
+    
         
+    /**
+     * __construct
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        // Set the formatter to 'none' so array keys match the exact heading row data
+        HeadingRowFormatter::default('none');
+    }
+
     /**
      * Summary:chunkSize define
      *
