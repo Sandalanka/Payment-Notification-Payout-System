@@ -36,8 +36,8 @@ class PaymentUploadController extends BaseController
     public function upload(PaymentUploadRequest $request): JsonResponse
     {   
         try{
+           // $fileName = $this->paymentUploadRepositoryInterface->uploadS3($request->file('file'));
             $this->paymentUploadRepositoryInterface->uploadExcel($request->file('file'));
-
             return $this->sendResponse("","File uploaded successfully and processing started.",201);
         }catch(\Exception $exception){
             return ApiCatchErrors::throw($exception);

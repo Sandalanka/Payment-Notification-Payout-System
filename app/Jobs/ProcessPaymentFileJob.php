@@ -35,6 +35,7 @@ class ProcessPaymentFileJob implements ShouldQueue
         try{
             $fullPath = storage_path("app/{$this->path}");
             Excel::import(new PaymentImport, $fullPath);
+
         }catch(\Exception $exception){
             return ApiCatchErrors::throw($exception);
         }

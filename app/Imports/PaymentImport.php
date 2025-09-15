@@ -13,8 +13,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Auth;
 
-class PaymentImport implements ToModel, SkipsOnFailure, WithHeadingRow ,WithValidation, WithChunkReading
+class PaymentImport implements ToModel, SkipsOnFailure, WithHeadingRow ,WithValidation, WithChunkReading, ShouldQueue
 {
     use SkipsFailures;
     protected $cacheKey = 'currency_rates';
@@ -52,10 +54,11 @@ class PaymentImport implements ToModel, SkipsOnFailure, WithHeadingRow ,WithVali
                     'processed_at' => $row['date_time'],
                     'reference_no' => $row['reference_no'],
                     'processed' => false,
-                    // 'uploaded_by' => $row['name'],
+                    'uploaded_by' => Auth::id()
                ]);
 
         PaymentLog::create([
+            'paymnet_id' => $payment->id,
             'row_number' => $payment->id,
             'status'     => 'success',
             'raw_data'   => json_encode($row),
@@ -87,22 +90,19 @@ class PaymentImport implements ToModel, SkipsOnFailure, WithHeadingRow ,WithVali
      */
     public function onFailure(...$failures)
     {
+        $allErrors = [];
+
         foreach ($failures as $failure) {
-            Log::error('Import failed', [
-                'row'      => $failure->row(),
-                'attribute'=> $failure->attribute(), 
-                'errors'   => $failure->errors(),
-                'values'   => $failure->values(), 
-            ]);
-             
-            PaymentLog::create([
-                'row_number' => $failure->row(),
-                'status'     => 'failure',
-                'message'    => json_encode($failure->errors()),
-                'raw_data'   => json_encode($failure->values()),
-            ]);
-            
+            $allErrors = array_merge($allErrors, $failure->errors());
         }
+
+        Log::error($failure);
+        PaymentLog::create([
+            'row_number' => null,
+            'status'     => 'failure',
+            'message'    => json_encode($allErrors),
+            'raw_data'   => json_encode($failures[0]->values()), 
+        ]);
     }
 
     
