@@ -12,12 +12,24 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class PaymentImport implements ToModel, SkipsOnFailure, WithHeadingRow ,WithValidation
+class PaymentImport implements ToModel, SkipsOnFailure, WithHeadingRow ,WithValidation, WithChunkReading
 {
     use SkipsFailures;
     protected $cacheKey = 'currency_rates';
     protected $cacheTtl = 3600;
+        
+    /**
+     * Summary:chunkSize define
+     *
+     * @return int
+     */
+    public function chunkSize(): int
+    {
+        return 500; 
+    }
+    
     /**
     * @param array $row
     *
