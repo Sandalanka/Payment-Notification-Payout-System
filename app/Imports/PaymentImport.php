@@ -86,12 +86,12 @@ class PaymentImport implements ToModel, SkipsOnFailure, WithHeadingRow ,WithVali
     public function rules(): array
     {
         return [
-            'customer_id'    => 'required',
-            'customer_name'  => 'required|string|max:255',
-            'customer_email' => 'required|email',
-            'amount'         => 'required|numeric|min:0',
-            'currency'       => 'required',
-            'date_time'      => 'required'
+            // 'customer_id'    => '',
+            'customer_name'  => 'string|max:255',
+            'customer_email' => 'email',
+            'amount'         => 'numeric|min:0',
+            // 'currency'       => '',
+            // 'date_time'      => ''
         ];
     }
     
