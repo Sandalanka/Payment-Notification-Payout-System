@@ -52,7 +52,7 @@ RUN echo "<Directory /var/www/html/public>\n\
     && a2enconf laravel
 
 # Increase PHP upload limits
-RUN echo "upload_max_filesize=100M\npost_max_size=100M\nmemory_limit=512M\nmax_execution_time=300" > /usr/local/etc/php/conf.d/uploads.ini
+RUN echo "upload_max_filesize=150M\npost_max_size=150M\nmemory_limit=512M\nmax_execution_time=3000" > /usr/local/etc/php/conf.d/uploads.ini
 
 # Expose Apache port
 EXPOSE 80
