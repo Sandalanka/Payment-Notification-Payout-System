@@ -11,6 +11,7 @@ class ApiCatchErrors
      /**
       * 
       * Summary: rollback db transaction failure somthing
+      *
       * @param  mixed $e
       * @param  mixed $message
       * @return void
@@ -23,6 +24,7 @@ class ApiCatchErrors
     /**
      * 
      * Summary: throw error return 
+     * 
      * @param  mixed $e
      * @param  mixed $message
      * @return void
@@ -30,7 +32,11 @@ class ApiCatchErrors
     public static function throw($error, $message = Message::GENERAL_API_CATCH_ERROR_MESSAGE){
         Log::error('Error message: ' . $error->getMessage());
 
-        throw new HttpResponseException(response()->json(["message"=> $error->getMessage()], 500));
+        throw new HttpResponseException(response()->json(["message"=> $error->getMessage()], 500, [
+                'Access-Control-Allow-Origin' => '*',
+                'Content-Type' => 'application/json'
+            ]
+        ));
     }
     
 }

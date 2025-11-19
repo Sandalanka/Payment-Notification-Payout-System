@@ -41,7 +41,7 @@ class AuthController extends Controller
         try{
             $user =$this->authRepositoryInterface->register($userDetails);
             DB::commit();
-            
+
             return $this->sendResponse( data: new UserResource($user),
                                         message: 'User Register Successful', 
                                         statusCode: 201);
@@ -81,7 +81,14 @@ class AuthController extends Controller
      * @return void
      */
     public function logout(){
-        $this->authRepositoryInterface->logout();
-        return $this->sendResponse("","logout Successful",200);
+        try{
+            $this->authRepositoryInterface->logout();
+
+            return $this->sendResponse(message: "logout Successful");
+
+        }catch(Exception $exception){
+            return ApiCatchErrors::throw($exception);
+        }
+       
     }
 }
