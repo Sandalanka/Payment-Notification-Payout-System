@@ -9,4 +9,6 @@ class Message {
     // Successfull general
     const GENERAL_RESPONSE_SUCCESS_MESSAGE = "Successful!";
 
+    const GENERAL_API_CATCH_ERROR_MESSAGE = "Something went wrong! Process not completed";
+
 }

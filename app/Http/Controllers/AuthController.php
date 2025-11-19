@@ -9,9 +9,8 @@ use App\Classes\ApiCatchErrors;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
-use App\Http\Controllers\BaseController as BaseController;
 
-class AuthController extends BaseController
+class AuthController extends Controller
 {
     private AuthRepositoryInterface $authRepositoryInterface;
     
@@ -42,7 +41,10 @@ class AuthController extends BaseController
         try{
             $user =$this->authRepositoryInterface->register($userDetails);
             DB::commit();
-            return $this->sendResponse(new UserResource($user),'User Register Successful', 201);
+            
+            return $this->sendResponse( data: new UserResource($user),
+                                        message: 'User Register Successful', 
+                                        statusCode: 201);
 
         }catch(\Exception $exception){
             return ApiCatchErrors::rollback($exception);
