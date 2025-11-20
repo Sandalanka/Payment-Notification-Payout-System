@@ -11,4 +11,7 @@ class Message {
 
     const GENERAL_API_CATCH_ERROR_MESSAGE = "Something went wrong! Process not completed";
 
+    const GENERAL_QUEUE_MESSAGE = "Excel uploaded successful!";
+
+
 }
