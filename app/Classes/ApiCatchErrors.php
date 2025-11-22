@@ -1,44 +1,34 @@
 <?php
 
 namespace App\Classes;
-
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Constant\Message;
 
 class ApiCatchErrors
-{
-    /**
-     *
-     * Summary: rollback db transaction failure somthing
-     *
-     * @param $errors
-     * @param null|string $message
-     * @return void
-     */
-    public static function rollback($errors, null|string $message = Message::GENERAL_API_CATCH_ERROR_MESSAGE): void
-    {
+{     
+     /**
+      * 
+      * Summary: rollback db transaction failure somthing
+      * @param  mixed $e
+      * @param  mixed $message
+      * @return void
+      */
+     public static function rollback($errors, $message ="Something went wrong! Process not completed"){
         DB::rollBack();
         self::throw($errors, $message);
     }
-
+    
     /**
-     *
-     * Summary: throw error return
-     *
-     * @param $error
-     * @param null|string $message
+     * 
+     * Summary: throw error return 
+     * @param  mixed $e
+     * @param  mixed $message
      * @return void
      */
-    public static function throw($error, null|string $message = Message::GENERAL_API_CATCH_ERROR_MESSAGE): void
-    {
+    public static function throw($error, $message ="Something went wrong! Process not completed"){
         Log::error('Error message: ' . $error->getMessage());
-
-        throw new HttpResponseException(response()->json(["message" => $error->getMessage()], 500, [
-                'Access-Control-Allow-Origin' => '*',
-                'Content-Type' => 'application/json'
-            ]
-        ));
+        throw new HttpResponseException(response()->json(["message"=> $error->getMessage()], 500));
     }
+    
 }
