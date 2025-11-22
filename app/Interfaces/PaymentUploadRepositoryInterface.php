@@ -1,24 +1,26 @@
 <?php
 
 namespace App\Interfaces;
+
 use Illuminate\Http\UploadedFile;
 
 interface PaymentUploadRepositoryInterface
-{    
+{
     /**
-     * Summary:uploadExcel file
+     * Summary: UploadExcel file
      *
-     * @param  mixed $data
+     * @param UploadedFile $file
      * @return void
      */
     public function uploadExcel(UploadedFile $file);
-    
+
     /**
-     * Summary:upload aws s3 bucket
+     * Summary: Upload aws s3 bucket
      *
-     * @param  mixed $file
-     * @return void
+     * @param mixed $file
+     * @param string $directory
+     * @return string
      */
-    public function uploadS3(UploadedFile $file, string $directory);
+    public function uploadS3(UploadedFile $file, string $directory): string;
 }
 
