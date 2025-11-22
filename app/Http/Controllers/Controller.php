@@ -6,43 +6,44 @@ use App\Constant\Message;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Exception;
-use Illuminate\Support\Collection;
 
 abstract class Controller
 {
     /**
+     *
      * Summary: send success response
-     * 
-     * @param  mixed $result
-     * @param  mixed $message
-     * @return void
+     *
+     * @param mixed $result
+     * @param mixed $message
+     * @param int $statusCode
+     * @return JsonResponse
      */
-    public function sendResponse( array $result = null , 
-                                  string $message = Message::GENERAL_RESPONSE_SUCCESS_MESSAGE, 
-                                  int $statusCode = 200
-                                ): JsonResponse
+    public function sendResponse(array  $result = null,
+                                 string $message = Message::GENERAL_RESPONSE_SUCCESS_MESSAGE,
+                                 int    $statusCode = 200
+    ): JsonResponse
     {
-        $response=[
+        $response = [
             'status' => 'Success',
             'timestamp' => now()->toDateTimeString()
         ];
 
-       if ($message !== null) {
+        if ($message !== null) {
             $response['message'] = $message;
         }
 
         if (!empty($data)) {
             $response['data'] = $data;
         }
-        
+
         return response()->json($response, $statusCode, [
                 'Access-Control-Allow-Origin' => '*',
                 'Content-Type' => 'application/json'
             ]
         );
     }
-    
-     /**
+
+    /**
      *
      * Summary: Return an error JSON response.
      *
